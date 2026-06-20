@@ -1,0 +1,287 @@
+<?php
+
+require_once 'config.php';
+
+session_start();
+if (!isset($_SESSION['email'])) {
+    header("Location: index.php");
+    exit();
+}
+
+$guest = null;
+$key = null;
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    $result = $conn->query("SELECT * FROM guests WHERE guest_card_id = '$id'");
+
+    if ($result->num_rows > 0) {
+        $guest = $result->fetch_assoc();
+    }
+    $keyResult = $conn->query("SELECT * FROM keys_ WHERE guest_card_id = '$id' AND returned_at IS NULL");
+
+    if ($keyResult->num_rows > 0) {
+        $key = $keyResult->fetch_assoc();
+    }
+    if (isset($_POST['remove_key'])) {
+        $guest_id = $_POST['id'] ?? null;
+
+    // returned_at frissítése
+    $conn->query("UPDATE keys_ SET returned_at = NOW() WHERE guest_card_id = '$guest_id' AND returned_at IS NULL");
+
+    $msg_return = "Kulcs sikeresen visszavéve!";
+
+    $keyResult = $conn->query("SELECT * FROM keys_ WHERE guest_card_id = '$guest_id' ORDER BY keys_id DESC LIMIT 1");
+    if ($keyResult->num_rows > 0) {
+        $key = $keyResult->fetch_assoc();
+        }
+
+}
+
+if (isset($_POST['add_key'])) {
+    $guest_id = $_POST['id'] ?? null;
+    $key_code = strtoupper($_POST['key_number'] ?? '');
+
+    // Ellenőrzés: van-e már kulcsa?
+    $check = $conn->query("SELECT * FROM keys_ WHERE guest_card_id = '$guest_id' AND returned_at IS NULL");
+
+    if ($check->num_rows > 0) {
+        $msg_already = "Ennek a vendégnek már van kiadott kulcsa!";
+    } else {
+        $conn->query("INSERT INTO keys_ (guest_card_id, key_number) VALUES ('$guest_id', '$key_code')");
+        $msg_add = "Kulcs sikeresen hozzáadva!";
+        $keyResult = $conn->query("SELECT * FROM keys_ WHERE guest_card_id = '$guest_id' AND returned_at IS NULL");
+        if ($keyResult->num_rows > 0) {
+            $key = $keyResult->fetch_assoc();
+        }
+    }
+}
+
+}
+
+if (isset($_POST['save_guest'])) {
+
+    $id = $_POST['id'];
+
+    $first = $_POST['guest_first_name'];
+    $last = $_POST['guest_last_name'];
+    $residence = $_POST['guest_residence'];
+    $birth = $_POST['guest_birth_date'];
+    $sex = $_POST['guest_sex'];
+    $email = $_POST['guest_email'];
+    $phone = $_POST['guest_phone'];
+    $card = $_POST['guest_card_id'];
+
+    $conn->query("
+        UPDATE guests SET
+            guest_first_name = '$first',
+            guest_last_name = '$last',
+            guest_residence = '$residence',
+            guest_birth_date = '$birth',
+            guest_sex = '$sex',
+            guest_email = '$email',
+            guest_phone = '$phone',
+            guest_card_id = '$card'
+        WHERE guest_card_id = '$id'
+    ");
+
+    $msg_save = "Adatok sikeresen frissítve!";
+}
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendégek kezelése</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <div class="menu">
+        <div class="menu-header">
+            <div class="name"><?= $_SESSION['name'] ?></div>
+            <img src="background/logout.png" class="logout-icon" onclick="window.location.href='logout.php'">
+        </div>
+            <button onclick="window.location.href='admin_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'admin_page.php' ? 'active' : '' ?>">
+            <img src="background/home.png" class="menu-icon">
+            Főoldal</button>
+            <h3>Vendégkezelés</h3>
+            <button 
+                onclick="window.location.href='guests_page.php'" 
+                class="<?= basename($_SERVER['PHP_SELF']) == 'guests_page.php' ? 'active' : '' ?>"><img src="background/guests.png" class="menu-icon"> Vendégek kezelése
+            </button>
+            <button onclick="window.location.href='guest_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'guest_register_page.php' ? 'active' : '' ?>">
+                <img src="background/guest_add.png" class="menu-icon">
+            Új vendég felvétele</button>
+            <h3>Személyzetkezelés</h3>
+            <button onclick="window.location.href='user_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'user_register_page.php' ? 'active' : '' ?>">
+                <img src="background/add-person.png" class="menu-icon">
+            Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+    </div>
+
+    <div class="main-content">
+
+        <h1>Vendégek kezelése</h1>
+
+<!-- FELSŐ SÁV -->
+<div class="top-section">
+
+    <!-- Vendég ID mező + keresés egy formban -->
+    <form method="GET">
+        <input type="text" name="id" placeholder="Vendég ID..." class="search-input" value="<?= $_GET['id'] ?? '' ?>">
+        <button type="submit" class="search-btn">Keresés</button>
+    </form>
+
+    <!-- Kulcs hozzáadása + visszavétele gombok egymás mellett -->
+    <div class="key-buttons">
+
+        <form method="POST">
+            <input type="hidden" name="id" value="<?= $_GET['id'] ?? '' ?>">
+            <input type="text" name="key_number" placeholder="Kulcs kódja (pl. K001)" class="search-input">
+            <button type="submit" name="add_key" class="search-btn">Kulcs hozzáadása</button>
+        </form>
+
+        <form method="POST">
+            <input type="hidden" name="id" value="<?= $_GET['id'] ?? '' ?>">
+            <button type="submit" name="remove_key" class="search-btn" style="background:#d9534f;">
+                Kulcs visszavétele
+            </button>
+        </form>
+
+    </div>
+
+    <!-- Üzenetek -->
+    <?php if (isset($msg_already)) echo "<p class='msg-error'>$msg_already</p>"; ?>
+    <?php if (isset($msg_add)) echo "<p class='msg-success'>$msg_add</p>"; ?>
+    <?php if (isset($msg_return)) echo "<p class='msg-success'>$msg_return</p>"; ?>
+    <?php if (isset($msg_save)) echo "<p class='msg-success'>$msg_save</p>"; ?>
+
+
+
+</div>
+
+
+
+        <!-- ALSÓ KÉTOSZLOPOS RÉSZ -->
+        <div class="bottom-section">
+
+            <!-- BAL OLDAL: VENDÉG ADATOK -->
+            <div class="left-panel">
+
+                <div class="photo-name-row">
+                    <?php if ($guest && $guest['guest_photo']): ?>
+                        <img src="guest_photos/<?= $guest['guest_photo'] ?>" class="guest-photo">
+                    <?php endif; ?>
+                </div>
+
+                <h4>Személyes adatok</h4>
+
+                <form method="POST">
+
+                    <input type="hidden" name="id" value="<?= $guest['guest_card_id'] ?>">
+
+                    <div class="output-field">
+                        <label>Keresztnév</label>
+                        <input type="text" name="guest_first_name" 
+                            value="<?= $guest ? $guest['guest_first_name'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Vezetéknév</label>
+                        <input type="text" name="guest_last_name" 
+                            value="<?= $guest ? $guest['guest_last_name'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Lakcím</label>
+                        <input type="text" name="guest_residence" 
+                            value="<?= $guest ? $guest['guest_residence'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Születési dátum</label>
+                        <input type="date" name="guest_birth_date" 
+                            value="<?= $guest ? $guest['guest_birth_date'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Nem</label>
+                        <input type="text" name="guest_sex" 
+                            value="<?= $guest ? $guest['guest_sex'] : '' ?>">
+                    </div>
+                    <h4>Elérhetőségek</h4>
+                    <div class="output-field">
+                        <label>E-mail</label>
+                        <input type="email" name="guest_email" 
+                            value="<?= $guest ? $guest['guest_email'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Telefonszám</label>
+                        <input type="text" name="guest_phone" 
+                            value="<?= $guest ? $guest['guest_phone'] : '' ?>">
+                    </div>
+
+                    <h4>Tagsági adatok</h4>
+                    <div class="output-field">
+                        <label>Kártya ID</label>
+                        <input type="text" name="guest_card_id" 
+                            value="<?= $guest ? $guest['guest_card_id'] : '' ?>">
+                    </div>
+
+                    <div class="output-field">
+                        <label>Regisztráció ideje</label>
+                        <span><?= $guest ? $guest['guest_register_time'] : '' ?></span>
+                    </div>
+
+                    <button type="submit" name="save_guest" class="search-btn">
+                        Módosítások mentése
+                    </button>
+
+                </form>
+
+
+            </div>
+
+            <!-- JOBB OLDAL: SZOLGÁLTATÁSOK -->
+            <div class="right-panel">
+
+                <div class="output-field">
+                    <label>Aktív kulcs</label>
+                    <span><?= $key ? $key['key_number'] : 'Nincs kiadott kulcs' ?></span>
+                </div>
+
+                <div class="output-field">
+                    <label>Kiadás ideje</label>
+                    <span><?= $key ? $key['issued_at'] : '-' ?></span>
+                </div>
+
+                <div class="output-field">
+                    <label>Visszavétel ideje</label>
+                    <span><?= $key && $key['returned_at'] ? $key['returned_at'] : '-' ?></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,540 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+    color: #000000;
+    min-height: 100vh;
+    padding-top: 0px; /* <<< EZ A LÉNYEG */
+}
+
+.menu button.active {
+    background: #b4b4b4;
+    transform: scale(1.05);
+}
+
+
+.page-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.menu h3 {
+    font-size: 18px;
+    color: #8f8f8f;
+    font-weight: bold;
+    border-bottom: 1px solid #8f8f8f;
+}
+
+.menu {
+    flex: 0.25;
+    background: #ffffff;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* <<< térköz a gombok között */
+    border-right: 2px solid #ddd;
+}
+
+.menu button {
+    width: 80%;                 /* teljes szélesség */
+    padding: 12px 20px;
+    font-size: 18px;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+
+    display: flex;               /* <<< ikon + szöveg egy sorban */
+    align-items: center;         /* függőleges igazítás */
+    gap: 12px;                   /* ikon és szöveg közötti tér */
+    justify-content: flex-start; /* <<< BALRA igazítva */
+}
+
+.menu-icon {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;              /* <<< ikon nem mozdul el */
+    margin-left: 5px;            /* <<< ikonok tökéletesen egy vonalban */
+}
+
+.menu button:hover {
+    background: #b4b4b4;
+    transform: scale(1.05);
+}
+
+
+.menu-header {
+    display: flex;
+    justify-content: space-between; /* név balra, ikon jobbra */
+    align-items: center;
+    margin-bottom: 70px; /* térköz a gombok előtt */
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logout-icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.logout-icon:hover {
+    transform: scale(1.25);
+}
+
+
+
+.main-content {
+    flex: 0.75;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-y: auto; /* ha túl sok a tartalom, görgethető legyen */
+}
+
+
+
+.kpi-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.kpi-card {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 220px;
+    transition: 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.kpi-card h4 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.kpi-card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+}
+
+
+.container {
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;   /* vízszintes közép */
+    align-items: center;       /* függőleges közép */
+}
+
+.form-box {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    display: none;
+}
+
+.form-box.active {
+    display: block;
+}
+
+
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+p:not(.msg-success):not(.msg-error) {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Gombok egymás mellett */
+.button-row {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Kereső form */
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #724747;
+    border-radius: 8px;
+}
+
+.search-btn,
+.register-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #4400ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.search-btn:hover,
+.register-btn:hover {
+    background: #3300cc;
+}
+
+/* Output mezők */
+.output-container {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.output-field {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.output-field label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.output-field span {
+    padding: 12px;
+    border: 2px solid #724747;
+    border-radius: 8px;
+    background: #f7f7f7;
+    font-size: 16px;
+}
+
+/* === LOGIN OLDAL KÉTOSZLOPOS ELRENDEZÉS === */
+
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    padding-top: 0; /* felül ne legyen extra hely */
+}
+
+/* BAL OLDAL – kép + szöveg */
+.left-side {
+    flex: 1;
+    background: url("background/background.jpg") no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1; /* <<< A BAL OLDAL ALUL VAN */
+    margin-right: -90px; /* <<< A KÉP BEMEGY A JOBB OLDAL ALÁ */
+}
+
+.left-side h1 {
+    font-size: 80px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.left-side img {
+    width: 320px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+/* JOBB OLDAL – teljes panel */
+.right-side {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+    position: relative;
+    z-index: 10; /* <<< A JOBB OLDAL FELÜL LESZ */
+    border-top-left-radius: 85px;
+    border-bottom-left-radius: 85px;
+}
+
+
+/* A form már NEM külön doboz */
+.form-box {
+    width: 100%;
+    max-width: 500px; /* nagyobb méret */
+    background: transparent; /* nincs háttérdoboz */
+    padding: 0; /* nincs extra padding */
+    border-radius: 0; /* nincs lekerekítés */
+    box-shadow: none; /* nincs árnyék */
+    position: static; /* nem lóg rá a képre */
+}
+
+
+.form-box h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 40px;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 25px; /* szebb lekerekítés */
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+
+.form-box button {
+    width: 100%;
+    padding: 16px;
+    background: #140e38;
+    border: none;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.form-box button:hover {
+    background: #5941e0;
+}
+
+.form-box .btn-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+    filter: invert(100%); /* fehér ikon */
+}
+
+
+
+/* === guests_page ===  */
+
+
+
+/* Felső sáv a main-content-ben */
+/* Felső sáv */
+.top-section {
+    width: 100%;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+
+    display: flex;
+    justify-content: space-between; /* két oldal */
+    align-items: flex-start;
+    gap: 40px;
+}
+
+/* Kisebb input mezők */
+.top-section input {
+    width: 250px; /* <<< kisebb mező */
+    text-align: center;
+}
+
+.top-section select {
+    width: 250px; /* <<< kisebb mező */
+    text-align: center;
+}
+
+/* Két gomb egymás mellett */
+.key-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.msg-success {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+.msg-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+/* Bal oldal */
+.top-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Jobb oldal */
+.top-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* JOBBRA igazítás */
+    gap: 15px;
+}
+
+.top-right form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* Kétoszlopos rész */
+.top-buttons {
+    display: flex;
+    justify-content: center;   /* <<< középre igazítás */
+    align-items: center;
+    gap: 20px;                 /* <<< térköz a gombok között */
+    flex-wrap: wrap;           /* <<< ha sok gomb van, törik a következő sorba */
+    margin-top: 20px;
+}
+
+.top-buttons form {
+    display: flex;
+    gap: 10px;
+}
+
+
+/* Bal és jobb oszlop 50/50 */
+.left-panel, .right-panel {
+    flex: 1;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.left-panel h4 {
+    margin-top: 25px;          /* felső térköz */
+    margin-bottom: 8px;        /* kisebb térköz alatta */
+    padding-bottom: 5px;       /* hely a vonalnak */
+    border-bottom: 1px solid #8f8f8f;  /* halvány szürke vonal */
+    width: 100%;               /* teljes szélesség */
+    font-size: 20px;           /* opcionális: szebb méret */
+    color: #8f8f8f;              /* opcionális: sötétebb cím */
+    font-weight: bold;          /* opcionális: félkövér */
+}
+
+/* Vendég fotó */
+.guest-photo {
+    width: 230px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Fotó + név blokk egymás mellett */
+.photo-name-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+/* A név mezők legyenek egy oszlopban */
+.name-fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* Alsó kétoszlopos rész – EZ HIÁNYZOTT */
+.bottom-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.output-field span,
+.output-field input,
+.output-field select {
+    width: 140%;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.top-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+
