@@ -1,0 +1,1 @@
+# Szakdolgozat-2026
