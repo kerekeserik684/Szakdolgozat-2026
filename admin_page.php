@@ -29,7 +29,7 @@ $todayKeyCount = $conn->query("
 
 <div class="page-wrapper">
 
-    <div class="menu">
+    <div class="menu"> 
         <div class="menu-header">
             <div class="name"><?= $_SESSION['name'] ?></div>
             <img src="background/logout.png" class="logout-icon" onclick="window.location.href='logout.php'">
