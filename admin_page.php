@@ -54,7 +54,9 @@ $todayKeyCount = $conn->query("
                 <img src="background/service_add.png" class="menu-icon">
             Szolgáltatás létrehozása</button>
             <h3>Készletkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
+                <img src="background/whey.png" class="menu-icon">
+            Termékkezelés</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
@@ -64,15 +66,13 @@ $todayKeyCount = $conn->query("
 
 
     <div class="main-content">
+        <h1>Üdv újra itt!</h1>
         <div class="kpi-container">
             <div class="kpi-card">
             <h4>Napi kulcskiadások</h4>
             <p><?= $todayKeyCount ?></p>
             </div>
         </div>
-
-        <h1>Üdv az admin felületen!</h1>
-        <p>Itt jelenik meg a fő tartalom.</p>
     </div>
 
 </div>

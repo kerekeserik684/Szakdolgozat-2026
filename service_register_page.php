@@ -81,8 +81,10 @@ if (isset($_POST['create_service'])) {
             class="<?= basename($_SERVER['SCRIPT_NAME']) == 'service_register_page.php' ? 'active' : '' ?>">
             <img src="background/service_add.png" class="menu-icon"> Szolgáltatás létrehozása
         </button>
-        <h3>Készletkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <h3>Készletkezelés</h3>
+            <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
+                <img src="background/whey.png" class="menu-icon">
+            Termékkezelés</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>

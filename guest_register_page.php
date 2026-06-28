@@ -62,7 +62,9 @@ if (isset($_POST['register_guest'])) {
                 <img src="background/service_add.png" class="menu-icon">
             Szolgáltatás létrehozása</button>
             <h3>Készletkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
+                <img src="background/whey.png" class="menu-icon">
+            Termékkezelés</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>

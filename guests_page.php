@@ -210,6 +210,25 @@ if ($guest) {
         $msg_service_error = "Nincs érvényes szolgáltatása a mai napra.";
     }
 }
+
+if (isset($_FILES['guest_photo']) && $_FILES['guest_photo']['error'] === 0) {
+
+    $guest_id = $_POST['guest_id'];
+
+    $filename = $guest_id . "_" . time() . ".jpg";
+    $target = "guest_photos/" . $filename;
+
+    move_uploaded_file($_FILES['guest_photo']['tmp_name'], $target);
+
+    $conn->query("
+        UPDATE guests
+        SET guest_photo = '$filename'
+        WHERE guest_id = '$guest_id'
+    ");
+
+    $msg_save = "Fotó sikeresen frissítve!";
+}
+
 ?>
 
 
@@ -250,7 +269,9 @@ if ($guest) {
                 <img src="background/service_add.png" class="menu-icon">
             Szolgáltatás létrehozása</button>
             <h3>Készletkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+            <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
+                <img src="background/whey.png" class="menu-icon">
+            Termékkezelés</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
             <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
@@ -311,10 +332,18 @@ if ($guest) {
             <div class="left-panel">
 
                 <div class="photo-name-row">
-                    <?php if ($guest && $guest['guest_photo']): ?>
-                        <img src="guest_photos/<?= $guest['guest_photo'] ?>" class="guest-photo">
+                    <?php if ($guest): ?>
+                        <img src="guest_photos/<?= $guest['guest_photo'] ?? 'default.png' ?>" 
+                            class="guest-photo"
+                            onclick="document.getElementById('photoUpload').click();">
                     <?php endif; ?>
                 </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="guest_id" value="<?= $guest['guest_id'] ?>">
+                    <input type="file" id="photoUpload" name="guest_photo" style="display:none;" onchange="this.form.submit();">
+                </form>
+
 
                 <h4>Személyes adatok</h4>
 

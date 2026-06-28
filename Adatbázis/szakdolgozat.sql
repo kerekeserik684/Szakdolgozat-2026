@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jún 27. 14:49
+-- Létrehozás ideje: 2026. Jún 28. 18:54
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `guests` (
 --
 
 INSERT INTO `guests` (`guest_id`, `guest_first_name`, `guest_last_name`, `guest_residence`, `guest_email`, `guest_phone`, `guest_birth_date`, `guest_sex`, `guest_photo`, `guest_card_id`, `guest_register_time`) VALUES
-(2, 'Elek', 'Teszt', 'Győr', 'wasd@gmail.com', '06302246561', '2006-01-01', 'Férfi', '1781972707_IMG_7686.jpeg', 'G00001', '2026-06-20 16:25:07');
+(2, 'Elek', 'Teszt', 'Győr', 'wasd@gmail.com', '06302246561', '2006-01-01', 'Férfi', '2_1782659116.jpg', 'G00001', '2026-06-20 16:25:07');
 
 -- --------------------------------------------------------
 
@@ -113,6 +113,33 @@ INSERT INTO `keys_` (`keys_id`, `key_number`, `guest_card_id`, `issued_at`, `ret
 (53, 'K001', 'G00001', '2026-06-27 14:32:49', '2026-06-27 12:32:44'),
 (54, 'K001', 'G00001', '2026-06-27 14:32:49', '2026-06-27 12:32:47'),
 (55, 'K001', 'G00001', '2026-06-27 14:32:49', '2026-06-27 12:32:50');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(255) NOT NULL,
+  `manufacturer` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `quantity_type` varchar(20) NOT NULL,
+  `storage` varchar(15) NOT NULL,
+  `quantity` mediumint(7) NOT NULL,
+  `quantity_price` mediumint(6) NOT NULL,
+  `product_number` varchar(6) NOT NULL,
+  `product_photo` varchar(255) DEFAULT NULL,
+  `indicator_set` mediumint(7) NOT NULL,
+  `minimum_order_qty` mediumint(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `products`
+--
+
+INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`, `quantity`, `quantity_price`, `product_number`, `product_photo`, `indicator_set`, `minimum_order_qty`) VALUES
+(1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 454, 450, 'P00001', '1_1782662511.jpg', 454, 454);
 
 -- --------------------------------------------------------
 
@@ -213,6 +240,12 @@ ALTER TABLE `keys_`
   ADD PRIMARY KEY (`keys_id`);
 
 --
+-- A tábla indexei `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `services`
 --
 ALTER TABLE `services`
@@ -245,6 +278,12 @@ ALTER TABLE `guests`
 --
 ALTER TABLE `keys_`
   MODIFY `keys_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT a táblához `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `services`
