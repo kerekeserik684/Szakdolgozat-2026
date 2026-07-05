@@ -32,6 +32,7 @@ if (isset($_POST['register'])) {
                 $_SESSION['name'] = $user['name'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role'] = $user['role'];
+                $_SESSION['user_id'] = $user['id'];
 
             if ($user['first_log'] == 1) {
                 header("Location: new_password_page.php");

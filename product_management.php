@@ -36,6 +36,7 @@ if (isset($_POST['save_product'])) {
     $manufacturer = $_POST['manufacturer'];
     $indicator_set = $_POST['indicator_set'];
     $minimum_order_qty = $_POST['minimum_order_qty'];
+    $scoop_volume = $_POST['scoop_volume'];
 
     // HA LÉTEZIK A TERMÉK → UPDATE
     if ($id) {
@@ -49,7 +50,8 @@ if (isset($_POST['save_product'])) {
                 product_number = '$pn',
                 indicator_set = '$indicator_set',
                 minimum_order_qty = '$minimum_order_qty',
-                manufacturer = '$manufacturer'
+                manufacturer = '$manufacturer',
+                scoop_volume = '$scoop_volume'
             WHERE id = '$id'
         ");
         $msg_save = "Termék adatai frissítve!";
@@ -58,8 +60,8 @@ if (isset($_POST['save_product'])) {
     // HA NEM LÉTEZIK → INSERT
     else {
         $conn->query("
-            INSERT INTO products (manufacturer ,name, quantity_type, storage, quantity, quantity_price, product_number, indicator_set, minimum_order_qty)
-            VALUES ('$manufacturer', '$name', '$qt', '$storage', '$quantity', '$price', '$pn', $indicator_set, $minimum_order_qty)
+            INSERT INTO products (manufacturer ,name, quantity_type, storage, quantity, quantity_price, product_number, indicator_set, minimum_order_qty, scoop_volume)
+            VALUES ('$manufacturer', '$name', '$qt', '$storage', '$quantity', '$price', '$pn', $indicator_set, $minimum_order_qty, $scoop_volume)
         ");
 
         $msg_save = "Új termék sikeresen létrehozva!";
@@ -87,6 +89,90 @@ if (isset($_FILES['product_photo']) && $_FILES['product_photo']['error'] === 0) 
 
     $msg_save = "Kép sikeresen frissítve!";
 }
+
+/* ─────────────────────────────────────────────
+   FOGYÁS
+────────────────────────────────────────────── */
+$movements = null;
+
+if ($product) {
+    $movements = $conn->query("
+        SELECT pg.*, u.name AS user_name
+        FROM product_guest pg
+        LEFT JOIN users u ON pg.user_id = u.id
+        WHERE pg.product_id = '{$product['id']}'
+        ORDER BY pg.timestamp DESC
+    ");
+}
+
+/* ─────────────────────────────────────────────
+   BEVÉTELEZÉS
+────────────────────────────────────────────── */
+if (isset($_POST['product_income'])) {
+
+    $product_id = $_POST['product_id'];
+    $user_id = $_POST['user_id'];
+    $qty = (int)$_POST['quantity'];
+
+    // Termék lekérése
+    $p = $conn->query("SELECT * FROM products WHERE id = '$product_id'")->fetch_assoc();
+
+    if ($p) {
+
+        // Bevétel rögzítése
+        $conn->query("
+            INSERT INTO product_guest (product_id, guest_id, user_id, quantity, reason)
+            VALUES ('$product_id', 0, '$user_id', '$qty', 'bevétel')
+        ");
+
+        // Készlet növelése
+        $new_qty = $p['quantity'] + $qty;
+
+        $conn->query("
+            UPDATE products
+            SET quantity = '$new_qty'
+            WHERE id = '$product_id'
+        ");
+
+        $msg_save = "Bevétel rögzítve!";
+    }
+}
+
+/* ─────────────────────────────────────────────
+   ELTÉRÉS KÖNYVELÉSE
+────────────────────────────────────────────── */
+if (isset($_POST['product_difference'])) {
+
+    $product_id = $_POST['product_id'];
+    $user_id = $_POST['user_id'];
+    $qty = (int)$_POST['quantity'];
+    $reason_text = $_POST['reason_text'];
+
+    // Termék lekérése
+    $p = $conn->query("SELECT * FROM products WHERE id = '$product_id'")->fetch_assoc();
+
+    if ($p) {
+
+        // Eltérés rögzítése
+        $conn->query("
+            INSERT INTO product_guest (product_id, guest_id, user_id, quantity, reason)
+            VALUES ('$product_id', 0, '$user_id', '$qty', '$reason_text')
+        ");
+
+        // Készlet csökkentése (eltérés mindig mínusz)
+        $new_qty = $p['quantity'] - $qty;
+
+        $conn->query("
+            UPDATE products
+            SET quantity = '$new_qty'
+            WHERE id = '$product_id'
+        ");
+
+        $msg_save = "Eltérés rögzítve!";
+    }
+}
+
+
 
 ?>
 
@@ -153,6 +239,7 @@ if (isset($_FILES['product_photo']) && $_FILES['product_photo']['error'] === 0) 
 
     <!-- BAL OLDAL: TERMÉK ADATOK -->
     <div class="left-panel">
+        <h4>Termékadatok</h4>
 
                 <div class="photo-name-row">
                     <?php if ($product): ?>
@@ -191,6 +278,11 @@ if (isset($_FILES['product_photo']) && $_FILES['product_photo']['error'] === 0) 
             </div>
 
             <div class="output-field">
+                <label>Kiadási egység</label>
+                <input type="text" name="scoop_volume" value="<?= $product ? $product['scoop_volume'] : '' ?>">
+            </div>
+
+            <div class="output-field">
                 <label>Egység</label>
                 <input type="text" name="quantity_type" value="<?= $product ? $product['quantity_type'] : '' ?>">
             </div>
@@ -225,11 +317,92 @@ if (isset($_FILES['product_photo']) && $_FILES['product_photo']['error'] === 0) 
 
     <!-- JOBB OLDAL: TERMÉK FOGYÁSA -->
     <div class="right-panel">
-        <h3>Termék fogyása</h3>
-        <p>Még nincs funkció hozzáadva.</p>
+    <h4>Termék bevételezése</h4>
+
+    <?php if ($product): ?>
+        <form method="POST">
+
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
+            <div class="output-field">
+                <label>Mennyiség</label>
+                <input type="number" name="quantity" min="1" required>
+            </div>
+
+            <button type="submit" name="product_income" class="search-btn">
+                Bevétel rögzítése
+            </button>
+
+        </form>
+         <?php else: ?>
+        <p>Nincs kiválasztott termék.</p>
+        <?php endif; ?>
+        <h4>Termék fogyása</h4>
+
+        <?php if ($product): ?>
+
+            <table class="movement-table">
+                <tr>
+                    <th>Dátum</th>
+                    <th>Mennyiség</th>
+                    <th>Ár</th>
+                    <th>Felhasználó</th>
+                    <th>Ok</th>
+                </tr>
+
+                <?php while ($m = $movements->fetch_assoc()): ?>
+                    <?php 
+                        $color = ($m['reason'] === 'fogyás' || $m['reason'] === 'Leltár' || $m['reason'] === 'Selejt') ? 'red' : 'green';
+                        $total_price = $m['quantity'] * $product['quantity_price'];
+                    ?>
+                    <tr class="<?= ($m['reason'] === 'fogyás' || $m['reason'] === 'Leltár' || $m['reason'] === 'Selejt') ? 'red' : 'green' ?>">
+                        <td><?= $m['timestamp'] ?></td>
+                        <td><?= $m['quantity'] ?></td>
+                        <td><?= $total_price ?> Ft</td>
+                        <td><?= $m['user_name'] ?></td>
+                        <td><?= $m['reason'] ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </table>
+
+        <?php else: ?>
+
+            <p>Nincs kiválasztott termék.</p>
+
+        <?php endif; ?>
+
+        <h4>Eltéréskönyvelés</h4>
+
+        <?php if ($product): ?>
+        <form method="POST">
+
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+            <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
+            <div class="output-field">
+                <label>Mennyiség</label>
+                <input type="number" name="quantity" min="1" required>
+            </div>
+
+            <div class="output-field">
+                <label>Eltérés oka</label>
+                <select name="reason_text" required>
+                    <option value="Selejt">Selejtezés</option>
+                    <option value="Leltár">Leltárkorrekció</option>
+                </select>
+            </div>
+            
+            <button type="submit" name="product_difference" class="search-btn">
+                Eltérés rögzítése
+            </button>
+
+        </form>
+        <?php else: ?>
+        <p>Nincs kiválasztott termék.</p>
+        <?php endif; ?>
+
     </div>
-
 </div>
-
 </body>
 </html>

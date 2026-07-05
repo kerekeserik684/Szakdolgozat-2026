@@ -14,6 +14,44 @@ $todayKeyCount = $conn->query("
     where DATE(issued_at) = CURDATE()
 ")->fetch_assoc()['c'];
 
+$stockValue = $conn->query("
+    SELECT SUM(quantity * quantity_price) AS total
+    FROM products
+")->fetch_assoc()['total'];
+
+$newGuests7Days = $conn->query("
+    SELECT COUNT(*) AS c
+    FROM guests
+    WHERE guest_register_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+")->fetch_assoc()['c'];
+
+$peak = $conn->query("
+    SELECT 
+        HOUR(issued_at) AS hour,
+        COUNT(*) AS count
+    FROM keys_
+    GROUP BY HOUR(issued_at)
+    ORDER BY count DESC
+    LIMIT 1
+")->fetch_assoc();
+
+$peakHour = $peak['hour'];
+$peakCount = $peak['count'];
+
+$topProducts = $conn->query("
+    SELECT 
+        p.name,
+        SUM(pg.quantity / p.scoop_volume) AS total_scoops
+    FROM product_guest pg
+    JOIN products p ON pg.product_id = p.id
+    WHERE pg.reason = 'fogyás'
+    GROUP BY pg.product_id
+    ORDER BY total_scoops DESC
+    LIMIT 3
+");
+
+
+
 ?>
 
 
@@ -69,9 +107,28 @@ $todayKeyCount = $conn->query("
         <h1>Üdv újra itt!</h1>
         <div class="kpi-container">
             <div class="kpi-card">
-            <h4>Napi kulcskiadások</h4>
-            <p><?= $todayKeyCount ?></p>
+                <h4>Napi kulcskiadások</h4>
+                <p><?= $todayKeyCount ?></p>
             </div>
+            <div class="kpi-card">
+                <h4>Készletérték</h4>
+                <p><?= number_format($stockValue, 0, ',', ' ') ?> Ft</p>
+            </div>
+            <div class="kpi-card">
+                <h4>Új vendégek az elmúlt 7 napban</h4>
+                <p><?= $newGuests7Days ?></p>
+            </div>
+            <div class="kpi-card">
+                <h4>Csúcsidőszak</h4>
+                <p><?= $peakHour ?>:00 - <?= $peakHour + 1 % 24 % 12 ?>:00 (<?= $peakCount ?> kiadás)</p>
+            </div>
+            <div class="kpi-card">
+                <h4>Legnépszerűbb termékek</h4>
+                <ol>
+                    <?php while ($product = $topProducts->fetch_assoc()): ?>
+                        <li><?= $product['name'] ?> (<?= round($product['total_scoops']) ?> Db)</li>
+                    <?php endwhile; ?>
+                </ol>
         </div>
     </div>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jún 28. 18:54
+-- Létrehozás ideje: 2026. Júl 05. 13:24
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -46,7 +46,8 @@ CREATE TABLE `guests` (
 --
 
 INSERT INTO `guests` (`guest_id`, `guest_first_name`, `guest_last_name`, `guest_residence`, `guest_email`, `guest_phone`, `guest_birth_date`, `guest_sex`, `guest_photo`, `guest_card_id`, `guest_register_time`) VALUES
-(2, 'Elek', 'Teszt', 'Győr', 'wasd@gmail.com', '06302246561', '2006-01-01', 'Férfi', '2_1782659116.jpg', 'G00001', '2026-06-20 16:25:07');
+(2, 'Elek', 'Teszt', 'Győr', 'wasd@gmail.com', '06302246561', '2006-01-01', 'Férfi', '2_1782659116.jpg', 'G00001', '2026-06-20 16:25:07'),
+(3, 'Teszt', '123', '', '', '', '0000-00-00', 'Férfi', '1783248540_f4ce7aeca24858cfb8c04fd8bc144f2e.jpg', 'G00004', '2026-07-05 10:49:00');
 
 -- --------------------------------------------------------
 
@@ -127,6 +128,7 @@ CREATE TABLE `products` (
   `quantity_type` varchar(20) NOT NULL,
   `storage` varchar(15) NOT NULL,
   `quantity` mediumint(7) NOT NULL,
+  `scoop_volume` tinyint(255) NOT NULL,
   `quantity_price` mediumint(6) NOT NULL,
   `product_number` varchar(6) NOT NULL,
   `product_photo` varchar(255) DEFAULT NULL,
@@ -138,8 +140,50 @@ CREATE TABLE `products` (
 -- A tábla adatainak kiíratása `products`
 --
 
-INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`, `quantity`, `quantity_price`, `product_number`, `product_photo`, `indicator_set`, `minimum_order_qty`) VALUES
-(1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 454, 450, 'P00001', '1_1782662511.jpg', 454, 454);
+INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`, `quantity`, `scoop_volume`, `quantity_price`, `product_number`, `product_photo`, `indicator_set`, `minimum_order_qty`) VALUES
+(1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 691, 30, 15, 'P00001', '1_1782662511.jpg', 454, 454),
+(2, 'Teszt', 'Creatine Monohydrate', 'gramm', 'T01-01', 985, 5, 120, 'P00002', NULL, 200, 200);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `product_guest`
+--
+
+CREATE TABLE `product_guest` (
+  `id` int(255) NOT NULL,
+  `product_id` int(255) NOT NULL,
+  `guest_id` int(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `quantity` int(255) NOT NULL,
+  `reason` varchar(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `product_guest`
+--
+
+INSERT INTO `product_guest` (`id`, `product_id`, `guest_id`, `user_id`, `timestamp`, `quantity`, `reason`) VALUES
+(1, 1, 2, 1, '2026-07-05 09:38:38', 30, 'fogyás'),
+(2, 1, 2, 1, '2026-07-05 09:58:06', 20, 'fogyás'),
+(3, 1, 2, 1, '2026-07-05 10:01:10', 100, 'fogyás'),
+(4, 1, 2, 1, '2026-07-05 10:10:07', 30, 'fogyás'),
+(5, 1, 0, 1, '2026-07-05 10:18:55', 1, 'bevétel'),
+(6, 1, 0, 1, '2026-07-05 10:21:54', 1, 'korrekc'),
+(7, 1, 0, 1, '2026-07-05 10:24:49', 1, 'selejte'),
+(8, 1, 0, 1, '2026-07-05 10:27:05', 1, 'selejte'),
+(9, 1, 0, 1, '2026-07-05 10:28:39', 1, 'selejte'),
+(10, 1, 0, 1, '2026-07-05 10:31:00', 1, 'Selejte'),
+(11, 1, 0, 1, '2026-07-05 10:32:05', 1, 'fogyás'),
+(12, 1, 0, 1, '2026-07-05 10:33:10', 1, 'Leltár'),
+(13, 1, 0, 1, '2026-07-05 10:33:24', 1, 'Selejt'),
+(14, 1, 0, 1, '2026-07-05 10:36:01', 454, 'bevétel'),
+(15, 2, 2, 1, '2026-07-05 10:56:52', 5, 'fogyás'),
+(16, 1, 2, 1, '2026-07-05 11:10:17', 0, 'fogyás'),
+(17, 1, 2, 1, '2026-07-05 11:10:50', 30, 'fogyás'),
+(18, 2, 2, 1, '2026-07-05 11:14:32', 0, 'fogyás'),
+(19, 2, 2, 1, '2026-07-05 11:15:00', 10, 'fogyás');
 
 -- --------------------------------------------------------
 
@@ -246,6 +290,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- A tábla indexei `product_guest`
+--
+ALTER TABLE `product_guest`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `services`
 --
 ALTER TABLE `services`
@@ -271,7 +321,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `guests`
 --
 ALTER TABLE `guests`
-  MODIFY `guest_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `guest_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `keys_`
@@ -283,7 +333,13 @@ ALTER TABLE `keys_`
 -- AUTO_INCREMENT a táblához `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `product_guest`
+--
+ALTER TABLE `product_guest`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT a táblához `services`

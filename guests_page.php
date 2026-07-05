@@ -229,6 +229,49 @@ if (isset($_FILES['guest_photo']) && $_FILES['guest_photo']['error'] === 0) {
     $msg_save = "Fotó sikeresen frissítve!";
 }
 
+if (isset($_POST['product_consume'])) {
+
+    $guest_id = $_POST['guest_id'];
+    $user_id = $_POST['user_id'];
+    $product_number = $_POST['product_number'];
+    $qty = (int)$_POST['quantity'];
+
+    // TERMÉK LEKÉRÉSE ANYAGSZÁM ALAPJÁN
+    $p = $conn->query("SELECT * FROM products WHERE product_number = '$product_number'")->fetch_assoc();
+
+    if ($p) {
+
+        $product_id = $p['id'];
+
+    // scoop méret grammban
+    $scoop = (int)$p['scoop_volume'];
+
+    // tényleges fogyás grammban
+    $consumed_grams = $qty * $scoop;
+
+    // FOGYÁS RÖGZÍTÉSE A SEGÉDTÁBLÁBA (grammban)
+    $conn->query("
+        INSERT INTO product_guest (product_id, guest_id, user_id, quantity, reason)
+        VALUES ('$product_id', '$guest_id', '$user_id', '$consumed_grams', 'fogyás')
+    ");
+
+    // KÉSZLET CSÖKKENTÉSE (grammban)
+    $new_qty = $p['quantity'] - $consumed_grams;
+
+    $conn->query("
+        UPDATE products
+        SET quantity = '$new_qty'
+        WHERE id = '$product_id'
+    ");
+
+    $msg_save = "Termék kikönyvelve!";
+
+    } else {
+        $msg_save = "Nincs ilyen anyagszám!";
+    }
+}
+
+
 ?>
 
 
@@ -462,6 +505,32 @@ if (isset($_FILES['guest_photo']) && $_FILES['guest_photo']['error'] === 0) {
                         <span><?= $key && $key['returned_at'] ? $key['returned_at'] : '-' ?></span>
                     </div>
                 </div> 
+
+                <div class="right-panel-bottom">
+                    <h4>Termék kikönyvelése</h4>
+
+                    <form method="POST">
+
+                        <input type="hidden" name="guest_id" value="<?= $guest['guest_id'] ?>">
+                        <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
+
+                        <div class="output-field">
+                            <label>Anyagszám</label>
+                            <input type="text" name="product_number" placeholder="P00001">
+                        </div>
+
+                        <div class="output-field">
+                            <label>Mennyiség</label>
+                            <input type="number" name="quantity" min="1">
+                        </div>
+
+                        <button type="submit" name="product_consume" class="search-btn">
+                            Termék kikönyvelése
+                        </button>
+
+                    </form>
+                </div>
 
             </div>
 

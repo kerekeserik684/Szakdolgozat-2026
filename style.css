@@ -550,8 +550,31 @@ p:not(.msg-success):not(.msg-error) {
 }
 
 
+/* Fogyás */
 
+.movement-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
 
+.movement-table-container {
+    max-height: 480px; /* kb. 12 sor */
+    overflow-y: auto;
+    margin-top: 10px;
+}
 
+.movement-table th, .movement-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
 
+.movement-table tr.red {
+    background-color: #ffe5e5 !important;
+    color: red !important;
+}
 
+.movement-table tr.green {
+    background-color: #e5ffe5 !important;
+    color: green !important;
+}
