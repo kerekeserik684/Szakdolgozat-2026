@@ -39,11 +39,7 @@ if (isset($_POST['register'])) {
                 exit();
             }
 
-                if ($user['role'] === 'admin') {
-                    header("Location: admin_page.php");
-                } else {
-                    header("Location: user_page.php");
-                }
+                header("Location: admin_page.php");
                 exit();
             }
         }

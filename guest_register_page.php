@@ -53,23 +53,23 @@ if (isset($_POST['register_guest'])) {
             <button onclick="window.location.href='guest_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'guest_register_page.php' ? 'active' : '' ?>">
                 <img src="background/guest_add.png" class="menu-icon">
             Új vendég felvétele</button>
-            <h3>Személyzetkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'user_register_page.php' ? 'active' : '' ?>">
-                <img src="background/add-person.png" class="menu-icon">
-            Felhasználó felvétele</button>
-            <h3>Szolgáltatáskezelés</h3>
-            <button onclick="window.location.href='service_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'service_register_page.php' ? 'active' : '' ?>">
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                <h3>Személyzetkezelés</h3>
+                <button onclick="window.location.href='user_register_page.php'"
+                        class="<?= basename($_SERVER['PHP_SELF']) == 'user_register_page.php' ? 'active' : '' ?>">
+                    <img src="background/add-person.png" class="menu-icon">
+                    Felhasználó felvétele
+                </button>
+                <h3>Szolgáltatáskezelés</h3>
+                <button onclick="window.location.href='service_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'service_register_page.php' ? 'active' : '' ?>">
                 <img src="background/service_add.png" class="menu-icon">
             Szolgáltatás létrehozása</button>
+            <?php endif; ?>
             <h3>Készletkezelés</h3>
             <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
                 <img src="background/whey.png" class="menu-icon">
             Termékkezelés</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+
     </div>
 
     <div class="main-content">

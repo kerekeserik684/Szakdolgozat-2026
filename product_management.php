@@ -203,23 +203,23 @@ if (isset($_POST['product_difference'])) {
             <button onclick="window.location.href='guest_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'guest_register_page.php' ? 'active' : '' ?>">
                 <img src="background/guest_add.png" class="menu-icon">
             Új vendég felvétele</button>
-            <h3>Személyzetkezelés</h3>
-            <button onclick="window.location.href='user_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'user_register_page.php' ? 'active' : '' ?>">
-                <img src="background/add-person.png" class="menu-icon">
-            Felhasználó felvétele</button>
-            <h3>Szolgáltatáskezelés</h3>
-            <button onclick="window.location.href='service_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'service_register_page.php' ? 'active' : '' ?>">
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                <h3>Személyzetkezelés</h3>
+                <button onclick="window.location.href='user_register_page.php'"
+                        class="<?= basename($_SERVER['PHP_SELF']) == 'user_register_page.php' ? 'active' : '' ?>">
+                    <img src="background/add-person.png" class="menu-icon">
+                    Felhasználó felvétele
+                </button>
+                <h3>Szolgáltatáskezelés</h3>
+                <button onclick="window.location.href='service_register_page.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'service_register_page.php' ? 'active' : '' ?>">
                 <img src="background/service_add.png" class="menu-icon">
             Szolgáltatás létrehozása</button>
+            <?php endif; ?>
             <h3>Készletkezelés</h3>
             <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
                 <img src="background/whey.png" class="menu-icon">
             Termékkezelés</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+
     </div>
 
     <div class="main-content">
@@ -259,58 +259,81 @@ if (isset($_POST['product_difference'])) {
 
             <div class="output-field">
                 <label>Gyártó</label>
-                <input type="text" name="manufacturer" value="<?= $product ? $product['manufacturer'] : '' ?>">
+                <input type="text" name="manufacturer"
+                    value="<?= $product ? $product['manufacturer'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Jelzőkészlet</label>
-                <input type="text" name="indicator_set" value="<?= $product ? $product['indicator_set'] : '' ?>">
+                <input type="text" name="indicator_set"
+                    value="<?= $product ? $product['indicator_set'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Minimum rendelési egység</label>
-                <input type="text" name="minimum_order_qty" value="<?= $product ? $product['minimum_order_qty'] : '' ?>">
+                <input type="text" name="minimum_order_qty"
+                    value="<?= $product ? $product['minimum_order_qty'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Termék neve</label>
-                <input type="text" name="name" value="<?= $product ? $product['name'] : '' ?>">
+                <input type="text" name="name"
+                    value="<?= $product ? $product['name'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Kiadási egység</label>
-                <input type="text" name="scoop_volume" value="<?= $product ? $product['scoop_volume'] : '' ?>">
+                <input type="text" name="scoop_volume"
+                    value="<?= $product ? $product['scoop_volume'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Egység</label>
-                <input type="text" name="quantity_type" value="<?= $product ? $product['quantity_type'] : '' ?>">
+                <input type="text" name="quantity_type"
+                    value="<?= $product ? $product['quantity_type'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Tárhely</label>
-                <input type="text" name="storage" value="<?= $product ? $product['storage'] : '' ?>">
+                <input type="text" name="storage"
+                    value="<?= $product ? $product['storage'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Mennyiség</label>
-                <input type="number" name="quantity" value="<?= $product ? $product['quantity'] : '' ?>">
+                <input type="number" name="quantity"
+                    value="<?= $product ? $product['quantity'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Egységár</label>
-                <input type="number" name="quantity_price" value="<?= $product ? $product['quantity_price'] : '' ?>">
+                <input type="number" name="quantity_price"
+                    value="<?= $product ? $product['quantity_price'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
             <div class="output-field">
                 <label>Anyagszám</label>
-                <input type="text" name="product_number" value="<?= $product ? $product['product_number'] : '' ?>">
+                <input type="text" name="product_number"
+                    value="<?= $product ? $product['product_number'] : '' ?>"
+                    <?= $_SESSION['role'] !== 'admin' ? 'readonly' : '' ?>>
             </div>
 
-            <button type="submit" name="save_product" class="search-btn">
-                Mentés
-            </button>
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                <button type="submit" name="save_product" class="search-btn">
+                    Mentés
+                </button>
+            <?php endif; ?>
         </form>
+
 
     </div>
 
@@ -371,7 +394,7 @@ if (isset($_POST['product_difference'])) {
             <p>Nincs kiválasztott termék.</p>
 
         <?php endif; ?>
-
+        <?php if ($_SESSION['role'] === 'admin'): ?>
         <h4>Eltéréskönyvelés</h4>
 
         <?php if ($product): ?>
@@ -401,7 +424,7 @@ if (isset($_POST['product_difference'])) {
         <?php else: ?>
         <p>Nincs kiválasztott termék.</p>
         <?php endif; ?>
-
+        <?php endif; ?>
     </div>
 </div>
 </body>

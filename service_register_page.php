@@ -85,11 +85,7 @@ if (isset($_POST['create_service'])) {
             <button onclick="window.location.href='product_management.php'"class="<?= basename($_SERVER['PHP_SELF']) == 'product_management.php' ? 'active' : '' ?>">
                 <img src="background/whey.png" class="menu-icon">
             Termékkezelés</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
-            <button onclick="window.location.href='user_register_page.php'">Felhasználó felvétele</button>
+
     </div>
 
     <div class="main-content">

@@ -117,9 +117,12 @@ body {
     padding: 25px 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    width: 220px;
+    min-width: 220px; /* minimum méret */
+    width: fit-content; /* automatikus szélesedés */
+    max-width: 100%; /* ne lógjon ki a konténerből */
     transition: 0.3s ease;
 }
+
 
 .kpi-card:hover {
     transform: translateY(-5px);
@@ -127,13 +130,14 @@ body {
 }
 
 .kpi-card h4 {
-    font-size: 18px;
+    font-size: 25px;
     color: #555;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-.kpi-card p {
-    font-size: 32px;
+.kpi-card p, ol, li {
+    font-size: 27px;
     font-weight: bold;
     color: #000;
 }
