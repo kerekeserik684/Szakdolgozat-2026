@@ -15,7 +15,7 @@ $todayKeyCount = $conn->query("
 ")->fetch_assoc()['c'];
 
 $stockValue = $conn->query("
-    SELECT SUM(quantity * quantity_price) AS total
+    SELECT SUM(order_price / minimum_order_qty * quantity) AS total
     FROM products
 ")->fetch_assoc()['total'];
 
@@ -50,8 +50,42 @@ $topProducts = $conn->query("
     LIMIT 3
 ");
 
+$toOrder = $conn->query("
+    SELECT p.product_number, p.name, p.quantity, p.indicator_set, p.quantity_price, p.minimum_order_qty, p.order_price
+    FROM products p
+    LEFT JOIN orders o 
+    ON o.product_id = p.product_number
+    WHERE p.quantity < p.indicator_set
+      AND o.order_id IS NULL
+");
 
+if (isset($_POST['order_submit'])) {
 
+    foreach ($_POST['multiplier'] as $product_number => $multiplier) {
+
+        if ($multiplier == 0) continue;
+
+        // termék adatok lekérése product_number alapján
+        $p = $conn->query("
+            SELECT minimum_order_qty 
+            FROM products 
+            WHERE product_number = '$product_number'
+        ")->fetch_assoc();
+
+        $ordered_amount = $p['minimum_order_qty'] * $multiplier;
+
+        // rendelés mentése product_number-rel
+        $conn->query("
+            INSERT INTO orders (product_id, multiplier, status)
+            VALUES ('$product_number', $multiplier, 'Rendelve')
+        ");
+    }
+
+    $_SESSION['msg_save'] = "Adatok sikeresen frissítve!";
+    header("Location: admin_page.php");
+    exit();
+    
+}
 ?>
 
 
@@ -129,11 +163,47 @@ $topProducts = $conn->query("
                         <li><?= $product['name'] ?> (<?= round($product['total_scoops']) ?> Db)</li>
                     <?php endwhile; ?>
                 </ol>
-        </div>
+            </div>
+            <div class="kpi-card">
+                <h4>Rendelési lista</h4>
+
+                <form method="POST" action="admin_page.php">
+                    <table class="order-table">
+                        <tr>
+                            <th>Anyagszám</th>
+                            <th>Név</th>
+                            <th>Készlet</th>
+                            <th>Jelzőkészlet</th>
+                            <th>Egységár</th>
+                            <th>Rendelés</th>
+                        </tr>
+
+                        <?php while ($p = $toOrder->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= $p['product_number'] ?></td>
+                                <td><?= $p['name'] ?></td>
+                                <td><?= $p['quantity'] ?></td>
+                                <td><?= $p['indicator_set'] ?></td>
+                                <td><?= $p['order_price'] ?> Ft</td>
+
+                                <td>
+                                    <select name="multiplier[<?= $p['product_number'] ?>]">
+                                        <option value="0">0×</option>
+                                        <option value="1">1×</option>
+                                        <option value="2">2×</option>
+                                        <option value="3">3×</option>
+                                        <option value="4">4×</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </table>
+                    <button type="submit" name="order_submit">Rendelés rögzítése</button>
+                </form>
+            </div>
     </div>
 
 </div>
 
 </body>
-
-</html>
+<html>
