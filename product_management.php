@@ -131,8 +131,8 @@ if (isset($_POST['product_income'])) {
 
         // Bevétel rögzítése
         $conn->query("
-            INSERT INTO product_guest (product_id, guest_id, user_id, quantity, reason)
-            VALUES ('$product_id', 0, '$user_id', '$qty', 'Bevétel')
+            INSERT INTO product_guest (product_id, user_id, quantity, reason)
+            VALUES ('$product_id', '$user_id', '$qty', 'Bevétel')
         ");
 
         // Készlet növelése
@@ -165,8 +165,8 @@ if (isset($_POST['product_difference'])) {
 
         // Eltérés rögzítése
         $conn->query("
-            INSERT INTO product_guest (product_id, guest_id, user_id, quantity, reason)
-            VALUES ('$product_id', 0, '$user_id', '$qty', '$reason_text')
+            INSERT INTO product_guest (product_id, user_id, quantity, reason)
+            VALUES ('$product_id', '$user_id', '$qty', '$reason_text')
         ");
 
         // Készlet csökkentése (eltérés mindig mínusz)
@@ -440,7 +440,7 @@ if ($product) {
                         else {
                             $total_price = $product['order_price'] / $product['minimum_order_qty'] * $m['quantity'];}
                     ?>
-                    <tr class="<?= ($m['reason'] === 'Fogyás' || $m['reason'] === 'Leltárkorrekció' || $m['reason'] === 'Selejtezés') ? 'red' : 'green' ?>">
+                    <tr class="<?= ($m['reason'] === 'fogyás' || $m['reason'] === 'Leltárkorrekció' || $m['reason'] === 'Selejt') ? 'red' : 'green' ?>">
                         <td><?= $m['timestamp'] ?></td>
                         <td><?= $m['quantity'] ?></td>
                         <td><?= $total_price ?> Ft</td>
