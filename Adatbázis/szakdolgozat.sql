@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Aug 16. 13:48
+-- Létrehozás ideje: 2026. Sze 20. 17:46
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -58,7 +58,7 @@ INSERT INTO `guests` (`guest_id`, `guest_first_name`, `guest_last_name`, `guest_
 CREATE TABLE `keys_` (
   `keys_id` int(255) NOT NULL,
   `key_number` varchar(6) NOT NULL,
-  `guest_card_id` varchar(255) NOT NULL,
+  `guest_card_id` varchar(6) NOT NULL,
   `issued_at` datetime NOT NULL,
   `returned_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -68,53 +68,45 @@ CREATE TABLE `keys_` (
 --
 
 INSERT INTO `keys_` (`keys_id`, `key_number`, `guest_card_id`, `issued_at`, `returned_at`) VALUES
-(1, 'K001', '0', '2026-06-20 18:21:32', '2026-06-20 16:21:08'),
-(2, 'K001', '0', '2026-06-20 18:26:51', '2026-06-20 16:26:51'),
-(3, 'K001', '0', '2026-06-20 18:34:30', '2026-06-20 16:34:30'),
-(4, 'K001', '0', '2026-06-20 18:39:01', '2026-06-20 16:39:01'),
-(5, 'K001', '0', '2026-06-20 20:22:14', '2026-06-20 18:22:14'),
-(7, '', 'G00001', '2026-07-05 17:00:02', '2026-06-20 18:32:08'),
-(8, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-20 18:32:18'),
-(9, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 10:08:10'),
-(10, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 10:19:07'),
-(11, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 10:36:46'),
-(12, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 10:41:20'),
-(13, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 11:57:58'),
-(14, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 11:58:35'),
-(15, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:13:41'),
-(16, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:21:50'),
-(17, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:22:08'),
-(18, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:22:10'),
-(19, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:22:13'),
-(28, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:54:39'),
-(29, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:54:53'),
-(30, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 12:55:27'),
-(31, '', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:04:07'),
-(32, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:08:19'),
-(33, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:08:29'),
-(34, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:33:18'),
-(35, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:49:24'),
-(36, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:49:24'),
-(37, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:51:22'),
-(38, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:54:08'),
-(39, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:56:21'),
-(40, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 13:56:26'),
-(41, '', 'G00001', '2026-07-05 17:00:02', '2026-06-21 14:05:09'),
-(42, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 14:05:56'),
-(43, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-21 14:07:26'),
-(44, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 10:47:53'),
-(45, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 10:54:57'),
-(46, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 10:55:39'),
-(47, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 10:56:01'),
-(48, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 10:57:30'),
-(49, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:15:07'),
-(50, '', '', '2026-06-27 14:15:02', NULL),
-(51, '', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:15:18'),
-(52, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:32:07'),
-(53, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:32:44'),
-(54, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:32:47'),
-(55, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-06-27 12:32:50'),
-(56, 'K001', 'G00001', '2026-07-05 17:00:02', '2026-07-05 15:00:04');
+(8, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-20 18:32:18'),
+(9, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 10:08:10'),
+(10, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 10:19:07'),
+(11, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 10:36:46'),
+(12, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 10:41:20'),
+(13, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 11:57:58'),
+(14, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 11:58:35'),
+(15, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:13:41'),
+(16, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:21:50'),
+(17, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:22:08'),
+(18, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:22:10'),
+(19, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:22:13'),
+(28, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:54:39'),
+(29, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:54:53'),
+(30, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 12:55:27'),
+(32, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:08:19'),
+(33, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:08:29'),
+(34, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:33:18'),
+(35, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:49:24'),
+(36, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:49:24'),
+(37, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:51:22'),
+(38, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:54:08'),
+(39, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:56:21'),
+(40, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 13:56:26'),
+(42, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 14:05:56'),
+(43, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-21 14:07:26'),
+(44, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 10:47:53'),
+(45, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 10:54:57'),
+(46, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 10:55:39'),
+(47, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 10:56:01'),
+(48, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 10:57:30'),
+(49, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:15:07'),
+(51, '', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:15:18'),
+(52, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:32:07'),
+(53, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:32:44'),
+(54, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:32:47'),
+(55, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-06-27 12:32:50'),
+(56, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-07-05 15:00:04'),
+(57, 'K001', 'G00001', '2026-09-14 18:03:48', '2026-09-14 16:04:22');
 
 -- --------------------------------------------------------
 
@@ -165,7 +157,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`, `quantity`, `scoop_volume`, `quantity_price`, `product_number`, `product_photo`, `indicator_set`, `minimum_order_qty`, `order_price`) VALUES
-(1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 600, 30, 500, 'P00001', '1_1782662511.jpg', 450, 450, 6000),
+(1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 137, 30, 500, 'P00001', '1_1782662511.jpg', 450, 450, 6000),
 (2, 'Teszt', 'Creatine Monohydrate', 'gramm', 'T01-01', 395, 5, 300, 'P00002', NULL, 200, 200, 5500);
 
 -- --------------------------------------------------------
@@ -176,9 +168,9 @@ INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`
 
 CREATE TABLE `product_guest` (
   `id` int(255) NOT NULL,
-  `product_id` int(255) NOT NULL,
-  `guest_id` int(255) NOT NULL,
   `user_id` int(255) NOT NULL,
+  `product_id` int(255) NOT NULL,
+  `guest_id` int(255) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `quantity` int(255) NOT NULL,
   `reason` varchar(30) NOT NULL
@@ -188,10 +180,13 @@ CREATE TABLE `product_guest` (
 -- A tábla adatainak kiíratása `product_guest`
 --
 
-INSERT INTO `product_guest` (`id`, `product_id`, `guest_id`, `user_id`, `timestamp`, `quantity`, `reason`) VALUES
-(12, 1, 0, 1, '2026-07-05 10:33:10', 1, 'Leltárkorrekció'),
-(24, 2, 0, 1, '2026-08-16 11:41:39', 200, 'Bevétel'),
-(25, 1, 2, 1, '2026-08-16 11:45:04', 60, 'fogyás');
+INSERT INTO `product_guest` (`id`, `user_id`, `product_id`, `guest_id`, `timestamp`, `quantity`, `reason`) VALUES
+(12, 1, 1, NULL, '2026-07-05 10:33:10', 1, 'Leltárkorrekció'),
+(24, 1, 2, NULL, '2026-08-16 11:41:39', 200, 'Bevétel'),
+(25, 1, 1, 2, '2026-08-16 11:45:04', 60, 'fogyás'),
+(27, 1, 1, NULL, '2026-09-14 15:56:42', 200, 'Leltárkorrekció'),
+(28, 1, 1, 2, '2026-09-14 16:05:10', 30, 'fogyás'),
+(29, 1, 1, NULL, '2026-09-20 13:04:32', 33, 'Selejt');
 
 -- --------------------------------------------------------
 
@@ -235,10 +230,6 @@ CREATE TABLE `service_guest` (
 --
 
 INSERT INTO `service_guest` (`id`, `guest_id`, `service_id`, `start_date`, `end_date`, `service_entries`) VALUES
-(1, 0, 1, '2026-06-19 22:00:00', '2026-06-21 00:00:00', NULL),
-(2, 0, 1, '2026-06-19 22:00:00', '2026-06-21 00:00:00', NULL),
-(3, 0, 1, '2026-06-19 22:00:00', '2026-06-21 00:00:00', NULL),
-(4, 0, 1, '2026-06-19 22:00:00', '2026-06-21 00:00:00', NULL),
 (5, 2, 1, '2026-06-20 22:00:00', '2026-06-22 00:00:00', 0),
 (6, 2, 1, '2026-06-20 22:00:00', '2026-06-22 00:00:00', 0),
 (7, 2, 1, '2026-06-20 22:00:00', '2026-06-22 00:00:00', 0),
@@ -250,7 +241,8 @@ INSERT INTO `service_guest` (`id`, `guest_id`, `service_id`, `start_date`, `end_
 (13, 2, 1, '2026-06-20 22:00:00', '2026-06-22 00:00:00', 0),
 (14, 2, 2, '2026-06-20 22:00:00', '2026-06-26 13:00:00', NULL),
 (20, 2, 1, '2026-06-26 22:00:00', '2026-06-28 00:00:00', 0),
-(21, 2, 2, '2026-06-26 22:00:00', '2026-07-28 00:00:00', 27);
+(21, 2, 2, '2026-06-26 22:00:00', '2026-07-28 00:00:00', 27),
+(22, 2, 1, '2026-09-13 22:00:00', '2026-09-15 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -283,31 +275,38 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `first_log`, `role`) VAL
 -- A tábla indexei `guests`
 --
 ALTER TABLE `guests`
-  ADD PRIMARY KEY (`guest_id`);
+  ADD PRIMARY KEY (`guest_id`),
+  ADD UNIQUE KEY `guest_card_id` (`guest_card_id`);
 
 --
 -- A tábla indexei `keys_`
 --
 ALTER TABLE `keys_`
-  ADD PRIMARY KEY (`keys_id`);
+  ADD PRIMARY KEY (`keys_id`),
+  ADD KEY `guest_card_id` (`guest_card_id`);
 
 --
 -- A tábla indexei `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- A tábla indexei `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `product_number` (`product_number`);
 
 --
 -- A tábla indexei `product_guest`
 --
 ALTER TABLE `product_guest`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `guest_id` (`guest_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- A tábla indexei `services`
@@ -319,7 +318,9 @@ ALTER TABLE `services`
 -- A tábla indexei `service_guest`
 --
 ALTER TABLE `service_guest`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `guest_id` (`guest_id`),
+  ADD KEY `service_id` (`service_id`);
 
 --
 -- A tábla indexei `users`
@@ -341,7 +342,7 @@ ALTER TABLE `guests`
 -- AUTO_INCREMENT a táblához `keys_`
 --
 ALTER TABLE `keys_`
-  MODIFY `keys_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `keys_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT a táblához `orders`
@@ -359,7 +360,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT a táblához `product_guest`
 --
 ALTER TABLE `product_guest`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT a táblához `services`
@@ -371,13 +372,44 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT a táblához `service_guest`
 --
 ALTER TABLE `service_guest`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `keys_`
+--
+ALTER TABLE `keys_`
+  ADD CONSTRAINT `keys__ibfk_1` FOREIGN KEY (`guest_card_id`) REFERENCES `guests` (`guest_card_id`);
+
+--
+-- Megkötések a táblához `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_number`);
+
+--
+-- Megkötések a táblához `product_guest`
+--
+ALTER TABLE `product_guest`
+  ADD CONSTRAINT `product_guest_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `product_guest_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `product_guest_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Megkötések a táblához `service_guest`
+--
+ALTER TABLE `service_guest`
+  ADD CONSTRAINT `service_guest_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`guest_id`),
+  ADD CONSTRAINT `service_guest_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`service_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
