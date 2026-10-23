@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Sze 20. 17:46
+-- Létrehozás ideje: 2026. Okt 23. 12:47
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `szakdolgozat`
+-- Adatbázis: `szakdolgozat_`
 --
 
 -- --------------------------------------------------------
@@ -133,6 +133,19 @@ INSERT INTO `orders` (`order_id`, `product_id`, `multiplier`, `order_date`, `sta
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `password_reset`
+--
+
+CREATE TABLE `password_reset` (
+  `email` varchar(255) NOT NULL,
+  `hash` varchar(255) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `attempts` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `products`
 --
 
@@ -158,7 +171,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `manufacturer`, `name`, `quantity_type`, `storage`, `quantity`, `scoop_volume`, `quantity_price`, `product_number`, `product_photo`, `indicator_set`, `minimum_order_qty`, `order_price`) VALUES
 (1, 'Teszt', 'Iso Whey Zero', 'gramm', 'T01-01', 137, 30, 500, 'P00001', '1_1782662511.jpg', 450, 450, 6000),
-(2, 'Teszt', 'Creatine Monohydrate', 'gramm', 'T01-01', 395, 5, 300, 'P00002', NULL, 200, 200, 5500);
+(2, 'Teszt', 'Creatine Monohydrate', 'gramm', 'T01-01', 199, 5, 300, 'P00002', NULL, 200, 200, 5500);
 
 -- --------------------------------------------------------
 
@@ -186,7 +199,9 @@ INSERT INTO `product_guest` (`id`, `user_id`, `product_id`, `guest_id`, `timesta
 (25, 1, 1, 2, '2026-08-16 11:45:04', 60, 'fogyás'),
 (27, 1, 1, NULL, '2026-09-14 15:56:42', 200, 'Leltárkorrekció'),
 (28, 1, 1, 2, '2026-09-14 16:05:10', 30, 'fogyás'),
-(29, 1, 1, NULL, '2026-09-20 13:04:32', 33, 'Selejt');
+(29, 1, 1, NULL, '2026-09-20 13:04:32', 33, 'Selejt'),
+(30, 1, 2, 2, '2026-10-23 08:25:41', 5, 'fogyás'),
+(31, 1, 2, NULL, '2026-10-23 08:26:52', 191, 'Selejt');
 
 -- --------------------------------------------------------
 
@@ -264,7 +279,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `first_log`, `role`) VALUES
-(1, 'Kerekes Erik', 'kerekeserik684@gmail.com', '$2y$10$I8hqWIhMlGJ1pRuUFlVz4e9gB1eyiJ7HgZ9G4txAIpxPKS/tmHMxG', b'0', 'admin'),
+(1, 'Kerekes Erik', 'kerekeserik684@gmail.com', '$2y$10$.MJQidzbkEEbsE6YRu/kg.xsPc.zdkyYvP3pAAO7Sb6FP4ymstfoe', b'0', 'admin'),
 (2, 'Teszt Teszt', 'wasdwasd@gmail.com', '$2y$10$a3t/w1IYyU1KMongy51yAek5j5ofj7i23yLCWHsJTQ5M.2zUDn6VK', b'0', 'user');
 
 --
@@ -291,6 +306,12 @@ ALTER TABLE `keys_`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- A tábla indexei `password_reset`
+--
+ALTER TABLE `password_reset`
+  ADD PRIMARY KEY (`email`);
 
 --
 -- A tábla indexei `products`
@@ -360,7 +381,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT a táblához `product_guest`
 --
 ALTER TABLE `product_guest`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT a táblához `services`
