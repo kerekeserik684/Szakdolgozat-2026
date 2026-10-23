@@ -444,7 +444,7 @@ if ($product) {
                         <td><?= $m['timestamp'] ?></td>
                         <td><?= $m['quantity'] ?></td>
                         <td><?= $total_price ?> Ft</td>
-                        <td><?= $m['user_name'] ?></td>
+                        <td><?= htmlspecialchars($m['user_name']) ?> (<?= $m['user_id'] ?>)</td>
                         <td><?= $m['reason'] ?></td>
                     </tr>
                 <?php endwhile; ?>

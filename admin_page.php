@@ -50,37 +50,28 @@ $topProducts = $conn->query("
     LIMIT 3
 ");
 
+// Lekérdezzük azokat a termékeket, amelyek készlete alacsonyabb, mint a jelzőkészlet és még nincs beérkezett rendelésük
 $toOrder = $conn->query("
     SELECT p.product_number, p.name, p.quantity, p.indicator_set, p.quantity_price, p.minimum_order_qty, p.order_price
     FROM products p
-    LEFT JOIN orders o 
-    ON o.product_id = p.product_number
     WHERE p.quantity < p.indicator_set
-      AND o.status = 'Beérkezett'
+      AND NOT EXISTS (SELECT 1
+          FROM orders o
+          WHERE o.product_id = p.product_number
+            AND o.status = 'Rendelve'
+      )
 ");
-
 if (isset($_POST['order_submit'])) {
-
-    foreach ($_POST['multiplier'] as $product_number => $multiplier) {
-
-        if ($multiplier == 0) continue;
-
-        // termék adatok lekérése product_number alapján
+    foreach ($_POST['multiplier'] as $product_number => $multiplier){if ($multiplier == 0) continue;
         $p = $conn->query("
             SELECT minimum_order_qty 
             FROM products 
             WHERE product_number = '$product_number'
         ")->fetch_assoc();
-
         $ordered_amount = $p['minimum_order_qty'] * $multiplier;
-
-        // rendelés mentése product_number-rel
         $conn->query("
             INSERT INTO orders (product_id, multiplier, status)
-            VALUES ('$product_number', $multiplier, 'Rendelve')
-        ");
-    }
-
+            VALUES ('$product_number', $multiplier, 'Rendelve')");}
     $_SESSION['msg_save'] = "Adatok sikeresen frissítve!";
     header("Location: admin_page.php");
     exit();
