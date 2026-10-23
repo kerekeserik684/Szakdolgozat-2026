@@ -56,7 +56,7 @@ $toOrder = $conn->query("
     LEFT JOIN orders o 
     ON o.product_id = p.product_number
     WHERE p.quantity < p.indicator_set
-      AND o.order_id IS NULL
+      AND o.status = 'Beérkezett'
 ");
 
 if (isset($_POST['order_submit'])) {
@@ -165,7 +165,7 @@ if (isset($_POST['order_submit'])) {
                 </ol>
             </div>
             <div class="kpi-card">
-                <h4>Rendelési lista</h4>
+                <h4>Jelzőkészlet alatti termékek</h4>
 
                 <form method="POST" action="admin_page.php">
                     <table class="order-table">

@@ -106,40 +106,130 @@ body {
 
 
 .kpi-container {
-    display: flex;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
     margin-bottom: 40px;
-    flex-wrap: wrap;
+    box-sizing: border-box;
+    align-items: stretch;
 }
 
 .kpi-card {
-    background: #ffffff;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    min-width: 220px; /* minimum méret */
-    width: fit-content; /* automatikus szélesedés */
-    max-width: 100%; /* ne lógjon ki a konténerből */
-    transition: 0.3s ease;
+    grid-column: span 2;
+
+    background: #fff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
 }
 
-
+/* Kártyák hover effektje */
 .kpi-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
 }
 
+/* Címek */
 .kpi-card h4 {
-    font-size: 25px;
-    color: #555;
-    margin-bottom: 10px;
+    font-size: clamp(18px, 1.5vw, 23px);
+    color: #444;
+    margin: 0 0 18px;
     text-align: center;
+    line-height: 1.4;
 }
 
-.kpi-card p, ol, li {
-    font-size: 27px;
-    font-weight: bold;
-    color: #000;
+/* KPI értékek */
+.kpi-card p {
+    font-size: clamp(20px, 2vw, 27px);
+    font-weight: 700;
+    color: #222;
+    text-align: center;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Lista */
+.kpi-card ol {
+    margin: 0;
+    padding-left: 25px;
+}
+
+.kpi-card li {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+/* 2. sor: két kártya, egyenként fél szélesség */
+.kpi-card:nth-child(4),
+.kpi-card:nth-child(5) {
+    grid-column: span 3;
+}
+
+/* 3. sor: rendelési táblázat teljes szélességben */
+.kpi-card:nth-child(6) {
+    grid-column: 1 / -1;
+}
+
+/* Táblázat görgethető marad kisebb képernyőn */
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.order-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.order-table th,
+.order-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.order-table th {
+    background: #f3f5f9;
+    color: #333;
+}
+
+.order-table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* Rendelés gomb */
+.kpi-card button {
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #140e38;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.kpi-card button:hover {
+    background: #5941e0;
 }
 
 
@@ -221,7 +311,7 @@ p:not(.msg-success):not(.msg-error) {
 .register-btn {
     padding: 10px 20px;
     font-size: 16px;
-    background: #4400ff;
+    background: #140e38;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -230,7 +320,7 @@ p:not(.msg-success):not(.msg-error) {
 
 .search-btn:hover,
 .register-btn:hover {
-    background: #3300cc;
+    background: #5941e0;
 }
 
 /* Output mezők */

@@ -46,6 +46,7 @@ function isActiveForm($formName, $activeForm) {
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Jelszó" required>
                 <button type="submit" name="login"><img src="background/login.png" class="btn-icon"> Bejelentkezés</button>
+                <p><button type="button" onclick="window.location.href='forgot_password.php'"><img src="background/forgot_password.png" class="btn-icon" alt="">Elfelejtetted a jelszavad? Semmi gond, katt ide!</button></p>
             </form>
         </div>
     </div>
