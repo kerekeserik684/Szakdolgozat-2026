@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     $mail->Subject = "Jelszó-visszaállítási kód";
                     $mail->Body =
-                        "A jelszó-visszaállítási kódod: " . $code
+                        "Kód: " . $code
                         . "\n\nA kód 10 percig érvényes.";
 
                     $mail->send();
